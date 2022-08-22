@@ -20,43 +20,30 @@ class CommentCrudController extends AbstractCrudController
         return Comment::class;
     }
 
-    /*
-    public function configureFields(string $pageName): iterable
-    {
-        return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
-        ];
-    }
-    */
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
             ->setEntityLabelInSingular('Conference Comment')
             ->setEntityLabelInPlural('Conference Comments')
             ->setSearchFields(['author', 'text', 'email'])
-            ->setDefaultSort(['createdAt' => 'DESC'])
-        ;
+            ->setDefaultSort(['createdAt' => 'DESC']);
     }
 
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-           ->add(EntityFilter::new('conference'))
-        ;
+            ->add(EntityFilter::new('conference'));
     }
+
     public function configureFields(string $pageName): iterable
-     {
-       yield AssociationField::new('conference');
-       yield TextField::new('author');
-       yield EmailField::new('email');
-       yield TextareaField::new('text')
-            ->hideOnIndex()
-        ;
+    {
+        yield AssociationField::new('conference');
+        yield TextField::new('author');
+        yield EmailField::new('email');
+        yield TextareaField::new('text')
+            ->hideOnIndex();
         yield TextField::new('photoFilename')
-            ->onlyOnIndex()
-        ;
+            ->onlyOnIndex();
 
         $createdAt = DateTimeField::new('createdAt')->setFormTypeOptions([
             'html5' => true,
@@ -65,9 +52,8 @@ class CommentCrudController extends AbstractCrudController
         ]);
         if (Crud::PAGE_EDIT === $pageName) {
             yield $createdAt->setFormTypeOption('disabled', true);
-        } 
-        else {
+        } else {
             yield $createdAt;
         }
-      }
+    }
 }
