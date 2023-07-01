@@ -16,7 +16,7 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-	$routeBuilder = $this->container->get(AdminUrlGenerator::class);
+        $routeBuilder = $this->container->get(AdminUrlGenerator::class);
         $url = $routeBuilder->setController(ConferenceCrudController::class)->generateUrl();
 
         return $this->redirect($url);
@@ -41,7 +41,7 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Fasttrack');
+            ->setTitle('Guestbook Generated');
     }
 
     public function configureMenuItems(): iterable

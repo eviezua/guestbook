@@ -11,6 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
  *
  * @method Conference|null find($id, $lockMode = null, $lockVersion = null)
  * @method Conference|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Conference[]    findAll()
  * @method Conference[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ConferenceRepository extends ServiceEntityRepository
@@ -20,14 +21,19 @@ class ConferenceRepository extends ServiceEntityRepository
         parent::__construct($registry, Conference::class);
     }
 
-    public function add(Conference $entity, bool $flush = false): void
+    public function findAll(): array
     {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        return $this->findBy([], ['year' => 'ASC', 'city' => 'ASC']);
     }
+
+  public function add(Conference $entity, bool $flush = false): void
+  {
+      $this->getEntityManager()->persist($entity);
+
+      if ($flush) {
+          $this->getEntityManager()->flush();
+      }
+  }
 
     public function remove(Conference $entity, bool $flush = false): void
     {
@@ -38,10 +44,6 @@ class ConferenceRepository extends ServiceEntityRepository
         }
     }
 
-    public function findAll(): array
-    {
-        return $this->findBy([], ['year' => 'ASC', 'city' => 'ASC']);
-    }
 //    /**
 //     * @return Conference[] Returns an array of Conference objects
 //     */

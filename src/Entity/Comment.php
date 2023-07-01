@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\CommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -16,17 +15,13 @@ class Comment
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\NotBlank]
+    #[ORM\Column(length: 255)]
     private ?string $author = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Assert\NotBlank]
     private ?string $text = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\NotBlank]
-    #[Assert\Email]
+    #[ORM\Column(length: 255)]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -39,9 +34,6 @@ class Comment
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photoFilename = null;
 
-    #[ORM\Column(type: 'string', length: 255, options: ["default" => "submitted"])]
-    private $state = 'submitted';
-    
     public function __toString(): string
     {
         return (string) $this->getEmail();
@@ -51,11 +43,7 @@ class Comment
     {
         return $this->id;
     }
-    #[ORM\PrePersist]
-    public function setCreatedAtValue()
-    {
-        $this->createdAt = new \DateTimeImmutable();
-    }
+
     public function getAuthor(): ?string
     {
         return $this->author;
@@ -104,6 +92,12 @@ class Comment
         return $this;
     }
 
+    #[ORM\PrePersist]
+    public function setCreatedAtValue()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
     public function getConference(): ?Conference
     {
         return $this->conference;
@@ -124,18 +118,6 @@ class Comment
     public function setPhotoFilename(?string $photoFilename): self
     {
         $this->photoFilename = $photoFilename;
-
-        return $this;
-    }
-
-    public function getState(): ?string
-    {
-        return $this->state;
-    }
-
-    public function setState(string $state): self
-    {
-        $this->state = $state;
 
         return $this;
     }
