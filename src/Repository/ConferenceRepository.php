@@ -26,14 +26,14 @@ class ConferenceRepository extends ServiceEntityRepository
         return $this->findBy([], ['year' => 'ASC', 'city' => 'ASC']);
     }
 
-  public function add(Conference $entity, bool $flush = false): void
-  {
-      $this->getEntityManager()->persist($entity);
+    public function save(Conference $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
 
-      if ($flush) {
-          $this->getEntityManager()->flush();
-      }
-  }
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
 
     public function remove(Conference $entity, bool $flush = false): void
     {
