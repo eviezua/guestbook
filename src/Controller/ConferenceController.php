@@ -26,6 +26,7 @@ class ConferenceController extends AbstractController
     public function __construct(Environment $twig, EntityManagerInterface $entityManager, MessageBusInterface $bus) {
         $this->entityManager = $entityManager;
         $this->bus = $bus;
+        $this->twig = $twig;
     }
     #[Route('/', name: 'homepage')]
     public function index(ConferenceRepository $conferenceRepository): Response
