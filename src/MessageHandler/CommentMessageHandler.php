@@ -6,10 +6,9 @@ use App\Message\CommentMessage;
 use App\Repository\CommentRepository;
 use App\SpamChecker;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-#[AsMessageHandler]
-class CommentMessageHandler
+class CommentMessageHandler implements MessageHandlerInterface
 {
     private $spamChecker;
     private $entityManager;
@@ -32,7 +31,7 @@ class CommentMessageHandler
         if (2 === $this->spamChecker->getSpamScore($comment, $message->getContext())) {
             $comment->setState('spam');
         } else {
-            $comment->setState('published');
+            $comment->setState('spam');
         }
 
         $this->entityManager->flush();
