@@ -10,7 +10,7 @@ class ConferenceControllerTest extends WebTestCase
     public function testIndex()
     {
         $client = static::createClient();
-        $client->request('GET', '/');
+        $client->request('GET', '/en/');
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h2', 'Give your feedback');
@@ -18,7 +18,7 @@ class ConferenceControllerTest extends WebTestCase
     public function testCommentSubmission()
     {
         $client = static::createClient();
-        $client->request('GET', '/conference/amsterdam-2019');
+        $client->request('GET', '/en/conference/amsterdam-2019');
         $client->submitForm('Submit', [
             'comment_form[author]' => 'Fabien',
             'comment_form[text]' => 'Some feedback from an automated functional test',
@@ -37,7 +37,7 @@ class ConferenceControllerTest extends WebTestCase
     public function testConferencePage()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/');
+        $crawler = $client->request('GET', '/en/');
 
         $this->assertCount(2, $crawler->filter('h4'));
 
@@ -46,6 +46,6 @@ class ConferenceControllerTest extends WebTestCase
         $this->assertPageTitleContains('Amsterdam');
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h2', 'Amsterdam 2019');
-        $this->assertSelectorExists('div:contains("There are 1 comments")');
+        $this->assertSelectorExists('div:contains("There is one comment")');
     }
 }
