@@ -1,7 +1,37 @@
 version: '3'
 
 services:
-###> doctrine/doctrine-bundle ###
+  nginx:
+    build:
+      args:
+        VERSION: $NGINX_VERSION
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+      target: dev
+    volumes:
+      - ./public:/app/public
+      - ./assets/css:/app/public/css
+      - ./assets/js:/app/public/js
+    depends_on:
+      - php-fpm
+    ports:
+      - 8000:80
+
+  php-fpm:
+    build:
+      args:
+        VERSION: $PHP_VERSION
+      context: .
+      dockerfile: ./docker/php-fpm/Dockerfile
+      target: dev
+    volumes:
+      - ./:/app
+    command: sh -c 'XDEBUG_MODE=off composer install --no-interaction --optimize-autoloader && php-fpm'
+    depends_on:
+      - database
+      - redis
+      - rabbitmq
+
   database:
     image: postgres:${POSTGRES_VERSION:-13}-alpine
     environment:
